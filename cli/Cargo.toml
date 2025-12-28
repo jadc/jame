@@ -1,0 +1,13 @@
+[package]
+name = "jame-cli"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "jame"
+path = "src/main.rs"
+
+[dependencies]
+jame = { path = "../core" }

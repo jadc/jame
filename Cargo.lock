@@ -5,3 +5,17 @@ version = 4
 [[package]]
 name = "jame"
 version = "0.1.0"
+
+[[package]]
+name = "jame-cli"
+version = "0.1.0"
+dependencies = [
+ "jame",
+]
+
+[[package]]
+name = "jame-gui"
+version = "0.1.0"
+dependencies = [
+ "jame",
+]
