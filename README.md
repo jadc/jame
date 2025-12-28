@@ -1,2 +1,64 @@
 # Just Another Media Editor (`jame`)
-WIP
+A simple and intuitive cross-platform media editor inspired by [ezgif](https://ezgif.com), written in [Rust](https://rust-lang.org/).
+
+## TODO
+- [ ] Support many input formats
+    - [ ] Video
+        - [ ] Detect if interlaced
+    - [ ] Image
+    - [ ] Animated image (gif, apng)
+    - [ ] Image sequence
+    - [ ] Archive of images
+- [ ] Support many output formats
+    - [ ] Video
+    - [ ] Image
+    - [ ] Animated image (gif, apng)
+    - [ ] Image sequence
+    - [ ] Archive of images
+- [ ] Non-destructive transformation pipeline
+    - [ ] Transformation coalescing (optimization) only when rendering
+    - [ ] Serialization support (TOML)
+- [ ] CLI
+- [ ] GUI
+    - [ ] Display EXIF metadata on sidebar
+- [ ] Transformations
+    - [ ] Generic visual media transformations
+        - [ ] Rotate
+        - [ ] Flip
+        - [ ] Resize
+        - [ ] Crop
+        - [ ] HSL
+        - [ ] Brightness and Contrast
+        - [ ] Simple filters (grayscale, sepia, tint, etc.)
+        - [ ] Deinterlace
+        - [ ] Denoise
+        - [ ] Sharpen
+        - [ ] Color curves
+    - [ ] Video/animated image transformations
+        - [ ] Reverse
+        - [ ] Trim
+        - [ ] Speed
+        - [ ] Frame order and editor
+        - [ ] `-pix_fmt`
+    - [ ] Audio transformations (basics, not priority)
+        - [ ] Mute
+        - [ ] Fade
+        - [ ] Delay
+        - [ ] Volume
+        - [ ] Replace
+    - [ ] Animated image transformations
+        - [ ] Loop count
+        - [ ] Lossy (LZF) GIF Compression
+    - [ ] Misc. media transformations (likely can't be data driven)
+        - [ ] Concat (no reencode)
+
+## Brainstorming
+- Effects/transformations can be data driven.
+    - Each one is a TOML file with details on the types of files it works on, input files and parameters, external command used and flags (which can be replaced via the transformation's parameters), output type, output file maybe?
+    - Data driven "coalesce" effects, with the same metadata as above, but also store if this effect can replace a specific sequence of other effects. Based on the effects used at runtime, the "compiler" will check the coalesce nodes and see if any such sequence/pattern occurs in the pipeline, and if it does, replace them with coalesce versions. Probably would need to hardcode or do something different for ffmpeg's `vf` and ~~`complex_filter`~~ (use vf only, maybe complex_filter down the line, if multi-input is needed), otherwise it'd be really redundant to describe that any effects that use vf can be coalesced.
+    - Effects should include details about which effects they are commutative with, so the "compiler" has flexibility to schedule them differently (i.e. data dependencies)
+        - Possibly encode this based on number of children on a node. Each sibling can be assumed to be commutative with each other.
+    - Effects must specify their inputs and type of output. The UI will parse this for each option in the effect's menu.
+    - Effect metadata should say if it require re-encoding, so this can be seen in the UI (or filter options based on that).
+        - May need to data drive what features different output formats support, and if they can do certain effects without re-encoding. This could be a huge scope creep, though.
+    - Input methods (dropdown, slider, video timeline, frame view) will probably need to be hardcoded, but the effects can select them data-drivenly.
