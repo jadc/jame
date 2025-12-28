@@ -1,0 +1,13 @@
+[package]
+name = "jame-gui"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "jame-gui"
+path = "src/main.rs"
+
+[dependencies]
+jame = { path = "../core" }

@@ -1,6 +1,11 @@
-[package]
-name = "jame"
+[workspace]
+resolver = "3"
+members = [ "core", "cli", "gui" ]
+
+[workspace.package]
 version = "0.1.0"
 edition = "2024"
+authors = ["jadc"]
+license = "GPLv3"
 
-[dependencies]
+[workspace.dependencies]
